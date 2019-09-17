@@ -1,0 +1,35 @@
+@import '~antd/es/style/themes/default.less';
+
+.main {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  width: 368px;
+  transform: translate(-50%, -50%);
+
+  @media screen and (max-width: @screen-sm) {
+    width: 95%;
+  }
+  .head {
+    width: 100%;
+    height: 115px;
+    margin-bottom: 8px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: 1px;
+    text-align: center;
+    .logo {
+      width: 118px;
+      height: 26px;
+      margin: 14px auto;
+      background: url('@/assets/logo.png') no-repeat 0, 0;
+      background-size: 100%;
+    }
+  }
+
+  .subBtn {
+    width: 100%;
+    // margin-right: 5%;
+  }
+}

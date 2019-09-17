@@ -1,0 +1,197 @@
+@import '~antd/es/style/themes/default.less';
+
+html,
+body,
+#root {
+  height: calc(100vh);
+  :global {
+    /* 设置滚动条的样式 */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background-color: #f0f2f5;
+    }
+
+    /* 滚动槽 */
+    ::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+
+    /* 滚动条滑块 */
+    ::-webkit-scrollbar-thumb {
+      background: rgba(24, 144, 255, 0.45);
+      border-radius: 10px;
+    }
+
+    .ant-pro-basicLayout-content {
+      margin: 0;
+    }
+
+    .ant-table-footer {
+      padding: 0;
+    }
+
+    .ant-table-thead > tr > th {
+      height: 28px;
+      padding: 12px;
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 28px;
+      text-align: center;
+      background: #fafafa;
+    }
+
+    .ant-table-tbody > tr > td {
+      padding: 6px;
+    }
+
+    // .ant-table-tbody > tr.ant-table-row:hover {
+    //   background-color: #e6f7ff;
+    // }
+
+    .ant-table-thead > tr.ant-table-row-hover > td,
+    .ant-table-tbody > tr.ant-table-row-hover > td,
+    .ant-table-thead > tr:hover > td,
+    .ant-table-tbody > tr:hover > td {
+      background: #e6f7ff;
+    }
+
+    .ant-switch {
+      background-color: rgba(229, 28, 28, 0.65);
+    }
+
+    .ant-switch-checked {
+      background-color: #1890ff;
+    }
+
+    .ant-layout-header {
+      height: 50px;
+      line-height: 50px;
+    }
+    .ant-pro-global-header {
+      height: 50px;
+      line-height: 50px;
+    }
+    .antd-pro-components-select-lang-index-dropDown {
+      line-height: 50px;
+    }
+    .antd-pro-components-global-header-index-right
+      .antd-pro-components-global-header-index-account
+      .antd-pro-components-global-header-index-avatar {
+      margin: calc((50px - 24px) / 2) 0;
+    }
+
+    .ant-layout-sider-children {
+      height: calc(100vh);
+    }
+
+    .ant-menu .ant-pro-sider-menu .ant-menu-dark .ant-menu-root .ant-menu-inline {
+      height: calc(100vh - 50px);
+    }
+
+    .ant-pro-sider-menu-logo {
+      height: 50px;
+      padding-left: 15px;
+      line-height: 50px;
+    }
+    .ant-pro-sider-menu-logo img {
+      width: 90px;
+      height: 21px;
+    }
+    .ant-layout-sider-collapsed {
+      .ant-pro-sider-menu-logo {
+        padding-left: 5px;
+      }
+      .ant-pro-sider-menu-logo img {
+        width: 70px;
+        height: 18px;
+      }
+    }
+  }
+  .headBox {
+    width: 100%;
+    height: auto;
+    padding: 5px 20px;
+    font-size: 14px;
+    background: #fff;
+    .title {
+      padding-left: 5px;
+      color: rgba(0, 0, 0, 0.65);
+    }
+    .searchBox {
+      padding: 10px 5px 0 5px;
+      .left {
+        float: left;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+      .right {
+        float: right;
+        margin-bottom: 10px;
+        margin-left: 10px;
+      }
+      .ant-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
+  .tableBox {
+    height: calc(100vh - 132px);
+    margin: 10px;
+    padding: 10px;
+    background: #fff;
+  }
+  .tableOneBox {
+    height: calc(100vh - 132px);
+    margin: 15px;
+    padding: 24px;
+    background: #fff;
+  }
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+.ant-modal-body {
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}

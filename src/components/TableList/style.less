@@ -1,0 +1,32 @@
+@import '~antd/es/style/themes/default.less';
+
+.standardTable {
+  background: #fff;
+  :global {
+    /* 设置滚动条的样式 */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background: #f0f2f5;
+    }
+
+    /* 滚动槽 */
+    ::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+
+    /* 滚动条滑块 */
+    ::-webkit-scrollbar-thumb {
+      background: rgba(24, 144, 255, 0.45);
+      border-radius: 10px;
+    }
+    .ant-table-thead > tr > th > {
+      height: 40px;
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 40px;
+      // background: #fafafa;
+    }
+  }
+}
