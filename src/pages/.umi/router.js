@@ -90,34 +90,6 @@ const routes = [
             exact: true,
           },
           {
-            name: 'subject',
-            path: '/system/subject',
-            authority: ['ztflgl'],
-            component: __IS_BROWSER
-              ? _dvaDynamic({
-                  component: () =>
-                    import(/* webpackChunkName: "p__system__subject" */ '../system/subject'),
-                  LoadingComponent: require('/home/zhaotq/WebstormProjects/wx-admin/src/components/PageLoading/index')
-                    .default,
-                })
-              : require('../system/subject').default,
-            exact: true,
-          },
-          {
-            name: 'keyword',
-            path: '/system/keyword',
-            authority: ['gjcgl'],
-            component: __IS_BROWSER
-              ? _dvaDynamic({
-                  component: () =>
-                    import(/* webpackChunkName: "p__system__keyword" */ '../system/keyword'),
-                  LoadingComponent: require('/home/zhaotq/WebstormProjects/wx-admin/src/components/PageLoading/index')
-                    .default,
-                })
-              : require('../system/keyword').default,
-            exact: true,
-          },
-          {
             name: 'organization',
             path: '/system/organization',
             authority: ['gjcgl'],
@@ -129,20 +101,6 @@ const routes = [
                     .default,
                 })
               : require('../system/organization').default,
-            exact: true,
-          },
-          {
-            name: 'module',
-            path: '/system/module',
-            authority: ['gjcgl'],
-            component: __IS_BROWSER
-              ? _dvaDynamic({
-                  component: () =>
-                    import(/* webpackChunkName: "p__system__module" */ '../system/module'),
-                  LoadingComponent: require('/home/zhaotq/WebstormProjects/wx-admin/src/components/PageLoading/index')
-                    .default,
-                })
-              : require('../system/module').default,
             exact: true,
           },
           {

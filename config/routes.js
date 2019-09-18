@@ -36,28 +36,10 @@ const routes = [
             component: './system/role',
           },
           {
-            name: 'subject',
-            path: './subject',
-            authority: ['ztflgl'],
-            component: './system/subject',
-          },
-          {
-            name: 'keyword',
-            path: './keyword',
-            authority: ['gjcgl'],
-            component: './system/keyword',
-          },
-          {
             name: 'organization',
             path: './organization',
             authority: ['gjcgl'],
             component: './system/organization',
-          },
-          {
-            name: 'module',
-            path: './module',
-            authority: ['gjcgl'],
-            component: './system/module',
           },
         ],
       },

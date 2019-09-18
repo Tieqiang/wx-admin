@@ -135,8 +135,8 @@ export default {
 
   proxy: {
     '/api/': {
-      target: 'http://10.1.11.151:8083',
-      // target: 'http://localhost:8080',
+      // target: 'http://10.1.11.151:8083',
+      target: 'http://localhost:8080',
       changeOrigin: true,
       pathRewrite: { '^/server': '' },
     },
