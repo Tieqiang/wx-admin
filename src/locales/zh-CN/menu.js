@@ -68,4 +68,5 @@ export default {
   'menu.personEdit': '人员信息-编辑',
   'menu.orgEdit': '机构信息-编辑',
   'menu.institutionalInfo.editPage': '机构信息',
+  'home.menu':"首页"
 };

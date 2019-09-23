@@ -1,5 +1,5 @@
-import { Component } from 'react';
-import { connect } from 'dva';
+import React, {Component} from 'react';
+import {connect} from 'dva';
 import {
   Form,
   Modal,
@@ -20,7 +20,7 @@ import Search from 'antd/es/input/Search';
 import globalStyles from '@/global.less';
 import OrgForm from './components/OrgForm';
 
-@connect(({ orgaManage, userManage }) => ({ orgaManage, userManage }))
+@connect(({orgaManage, userManage}) => ({orgaManage, userManage}))
 class Organization extends Component {
   state = {
     showEditModal: false,
@@ -47,9 +47,8 @@ class Organization extends Component {
   }
 
   initData() {
-    let { form, orgaManage } = this.props;
-    let { orgAllList } = orgaManage;
-    console.log(orgAllList);
+    let {form, orgaManage} = this.props;
+    let {orgAllList} = orgaManage;
     this.setState({
       ...this.state,
       dataSource: this.getTreeData(orgAllList),
@@ -58,7 +57,7 @@ class Organization extends Component {
 
   // 请求列表数据
   getOrgList = params => {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch({
       type: 'orgaManage/getAllOrg',
       payload: params,
@@ -70,28 +69,33 @@ class Organization extends Component {
 
   getTreeData(orgAllList) {
     let target = [];
-    target = orgAllList.filter(item => item.parentId === '0');
-    (target = target.map(value => {
+
+    //添加key,title,children字段
+    target = orgAllList.map(value => {
       return {
         ...value,
         key: value.id,
         title: value.orgName,
         children: [],
       };
-    })),
-      target.forEach(item => {
-        orgAllList.forEach(item1 => {
-          if (item1.parentId == item.key) {
-            let obj = {
-              ...item1,
-              key: item1.id,
-              title: item1.orgName,
-            };
-            item.children.push(obj);
-          }
-        });
+    });
+
+    //根据parentId 添加到children中去。此处要理解对象的引用属性
+    target.forEach(item => {
+      target.forEach(item1 => {
+        if (item1.parentId == item.key) {
+          let obj = {
+            ...item1,
+            key: item1.id,
+            title: item1.orgName,
+          };
+          item.children.push(obj);
+        }
       });
-    //console.log(target);
+    });
+
+    //过滤出所有的顶级元素
+    target = target.filter(item => item.parentId === '0');
     return target;
   }
 
@@ -102,10 +106,8 @@ class Organization extends Component {
     let ParCompany = []; //父级公司
     let delParCompany = []; //查询结果
     ParCompany = orgAllList.filter(item => item.parentId === '0'); //父级公司
-    console.log(ParCompany);
     newTarget = orgAllList.filter(item => item.orgName.indexOf(value) > -1); //根据搜索值过滤全部,得到非树形结果
     //newParTarget=newTarget.filter(item => item.parentId === '0');//从搜索后的结果中筛出公司
-    console.log(newTarget);
     (ParCompany = ParCompany.map(value => {
       return {
         ...value,
@@ -134,19 +136,16 @@ class Organization extends Component {
       queryResult = ParCompany;
     } else {
       //如果部分公司不符合查询条件，也没有符合条件的子级，就删除
-      queryResult = ParCompany.concat(delParCompany).filter(function(v, i, arr) {
+      queryResult = ParCompany.concat(delParCompany).filter(function (v, i, arr) {
         return arr.indexOf(v) == arr.lastIndexOf(v);
       });
     }
-    console.log(delParCompany);
-    console.log(queryResult);
-    console.log(queryResult.key);
     return queryResult;
   }
 
   //删除机构
   removeOrg(id) {
-    let { dispatch } = this.props;
+    let {dispatch} = this.props;
     dispatch({
       type: 'orgaManage/removeOrg',
       payload: id,
@@ -157,14 +156,6 @@ class Organization extends Component {
   }
 
   columns = [
-    {
-      title: '序号',
-      render: (text, record, index) => `${index + 1}`,
-      key: 'index',
-      align: 'center',
-      fixed: 'left',
-      width: 80,
-    },
     {
       title: '机构名称',
       width: 350,
@@ -218,7 +209,7 @@ class Organization extends Component {
               <Icon
                 type="edit"
                 theme="twoTone"
-                style={{ marginRight: '10px' }}
+                style={{marginRight: '10px'}}
                 onClick={() => {
                   this.openModalForm(record, 'update');
                 }}
@@ -228,7 +219,7 @@ class Organization extends Component {
               <Icon
                 type="stop"
                 theme="twoTone"
-                style={{ marginLeft: '10px' }}
+                style={{marginLeft: '10px'}}
                 rotate="90"
                 onClick={() => {
                   Modal.confirm({
@@ -271,7 +262,7 @@ class Organization extends Component {
 
   //保存机构
   saveOrg(orgObj) {
-    let { dispatch } = this.props;
+    let {dispatch} = this.props;
     dispatch({
       type: 'orgaManage/addOrg',
       payload: {
@@ -290,61 +281,46 @@ class Organization extends Component {
   }
 
   render() {
-    const { columns, onChange, scroll, onRow } = this.props;
-    let { form, orgaManage } = this.props;
-    let { orgAllList } = orgaManage;
+    const {columns, onChange, scroll, onRow} = this.props;
+    let {form, orgaManage} = this.props;
+    let {orgAllList} = orgaManage;
     let ParCompany = [];
 
     ParCompany = orgAllList.filter(item => item.parentId === '0'); //父级公司
-    //let target = this.getTreeData(orgAllList);
-    //console.log(target);
-    // this.initData();
-    let tableContent = <Table />;
-    if (this.state.showSearch) {
-      tableContent = (
-        <Table
-          columns={this.columns}
-          dataSource={this.state.dataSource}
-          expandedRowKeys={[
-            'b923179f-ba52-11e9-8f49-1418772e7691',
-            'b9231c2b-ba52-11e9-8f49-1418772e7691',
-            'b9231e06-ba52-11e9-8f49-1418772e7691',
-            'b9231fa5-ba52-11e9-8f49-1418772e7691',
-            'b9232143-ba52-11e9-8f49-1418772e7691',
-            'b92322d7-ba52-11e9-8f49-1418772e7691',
-            'b9232467-ba52-11e9-8f49-1418772e7691',
-          ]}
-          onRow={record => {
-            return {
-              onDoubleClick: e => {
-                this.openModalForm(record, 'update');
-              },
-            };
-          }}
-          scroll={{ x: 1360, y: 'calc(100vh - 380px)' }}
-          pagination={false}
-        />
-      );
-    } else {
-      tableContent = (
-        <Table
-          columns={this.columns}
-          dataSource={this.state.dataSource}
-          onRow={record => {
-            return {
-              onDoubleClick: e => {
-                this.openModalForm(record, 'update');
-              },
-            };
-          }}
-          scroll={{ x: 1360, y: 'calc(100vh - 380px)' }}
-          pagination={false}
-        />
-      );
-    }
-    let modalContent = <div />;
+    let tableContent = (
+      <Table
+        columns={this.columns}
+        dataSource={this.state.dataSource}
+        expandIcon={props => {
+          let {record, expandable, expanded} = props;
+          if (expandable && record.children.length > 0) {
+            if (expanded) {
+              return (<Icon type={"folder-open"} theme={"twoTone"} style={{marginRight: 5}}/>)
+            } else {
+              return (<Icon type="folder" style={{marginRight: 5}} theme={"twoTone"}/>)
+            }
+          } else {
+            return (<span/>)
+          }
+
+        }}
+        expandRowByClick={true}
+        indentSize={30}
+        onRow={record => {
+          return {
+            onDoubleClick: e => {
+              this.openModalForm(record, 'update');
+            },
+          };
+        }}
+        scroll={{x: 1360, y: 'calc(100vh - 380px)'}}
+        pagination={false}
+      />
+    );
+
+    let modalContent = <div/>;
     if (this.state.showTree) {
-      modalContent = <Tree treeData={target} />;
+      modalContent = <Tree treeData={target}/>;
     } else {
       modalContent = <OrgForm ref="orgForm" {...this.state.currentOrg} />;
     }
@@ -355,21 +331,6 @@ class Organization extends Component {
           <div className={globalStyles.searchBox}>
             <Row>
               <Col>
-                <Button
-                  type={'primary'}
-                  className={globalStyles.right}
-                  onClick={e => {
-                    this.setState({
-                      ...this.state,
-                      showEditModal: true,
-                      modalTitle: '树状结构查看',
-                      showTree: true,
-                    });
-                  }}
-                  icon={'more'}
-                >
-                  树状结构查看
-                </Button>
                 <Button
                   icon="plus"
                   type="primary"
@@ -389,7 +350,7 @@ class Organization extends Component {
                       showSearch: true,
                     });
                   }}
-                  style={{ width: 240 }}
+                  style={{width: 240}}
                   className={globalStyles.left}
                   enterButton="查询"
                 />
@@ -399,33 +360,10 @@ class Organization extends Component {
         </div>
         <div className={globalStyles.tableOneBox}>
           {tableContent}
-          {/*  <Table
-            columns={this.columns}
-            dataSource={this.state.dataSource}
-            expandedRowKeys={[
-              'b923179f-ba52-11e9-8f49-1418772e7691', 
-              'b9231c2b-ba52-11e9-8f49-1418772e7691', 
-              'b9231e06-ba52-11e9-8f49-1418772e7691',
-              'b9231fa5-ba52-11e9-8f49-1418772e7691',
-              'b9232143-ba52-11e9-8f49-1418772e7691',
-              'b92322d7-ba52-11e9-8f49-1418772e7691',
-              'b9232467-ba52-11e9-8f49-1418772e7691']}
-            onRow={record => {
-              return {
-                onDoubleClick: e => {
-                  this.openModalForm(record, 'update');
-                },
-              };
-            }}
-            scroll={{ x: 1360, y: 'calc(100vh - 380px)' }}
-            pagination={false}
-          /> */}
-          {/*<span style={{ width: '100%', paddingLeft: '95%' }}> 共 {orgAllList.length} 条</span>*/}
         </div>
         <Modal
           visible={this.state.showEditModal}
           onOk={() => {
-            // alert('ok')
             this.refs.orgForm.validateFields((error, values) => {
               if (!error) {
                 //验证通过
