@@ -104,6 +104,19 @@ const routes = [
             exact: true,
           },
           {
+            name: 'dictManage',
+            path: '/system/dict-manage',
+            component: __IS_BROWSER
+              ? _dvaDynamic({
+                  component: () =>
+                    import(/* webpackChunkName: "p__system__dictManage" */ '../system/dictManage'),
+                  LoadingComponent: require('/home/zhaotq/WebstormProjects/wx-admin/src/components/PageLoading/index')
+                    .default,
+                })
+              : require('../system/dictManage').default,
+            exact: true,
+          },
+          {
             component: () =>
               React.createElement(
                 require('/home/zhaotq/WebstormProjects/wx-admin/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')

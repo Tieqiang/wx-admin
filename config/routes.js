@@ -41,6 +41,12 @@ const routes = [
             authority: ['gjcgl'],
             component: './system/organization',
           },
+          {
+            name:"dictManage",
+            path:"./dict-manage",
+            // authority:['dictManage'],
+            component:"./system/dictManage"
+          }
         ],
       },
       {

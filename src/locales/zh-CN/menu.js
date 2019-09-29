@@ -43,10 +43,7 @@ export default {
   'menu.account.settings': '个人设置',
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
-  'menu.editor': '图形编辑器',
-  'menu.editor.flow': '流程编辑器',
-  'menu.editor.mind': '脑图编辑器',
-  'menu.editor.koni': '拓扑编辑器',
+
   'menu.system.keyword': '关键词管理',
   'menu.system': '系统管理',
   'menu.system.user': '用户管理',
@@ -54,19 +51,6 @@ export default {
   'menu.system.role': '角色管理',
   'menu.system.organization': '机构管理',
   'menu.system.module': '模块管理',
-  'menu.resource': '内部资源管理',
-  'menu.enterpriseInfo': '企业信息管理',
-  'menu.enterpriseInfo.editPage': '企业信息',
-  'menu.institutionalInfo': '机构信息管理',
-  'menu.personnelInfo': '人员信息管理',
-  'menu.container': '文献内容管理',
-  'menu.documentContent': '文献内容管理',
-  'menu.documentContent.documentEdit': '内容管理-编辑',
-  'menu.documentEdit': '内容管理-编辑',
-  'menu.edit': '企业信息-编辑',
-  'menu.personnelInfo.personEdit': '人员信息',
-  'menu.personEdit': '人员信息-编辑',
-  'menu.orgEdit': '机构信息-编辑',
-  'menu.institutionalInfo.editPage': '机构信息',
-  'home.menu':"首页"
+  "menu.system.dictManage":"系统字典管理",
+  "menu.system.dict-manage":"系统字典管理"
 };
