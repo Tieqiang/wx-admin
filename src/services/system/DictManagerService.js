@@ -38,13 +38,13 @@ export default {
   removeDictType: async function (id) {
     return request(BASE_URL, {method: "DELETE", params: {id: id}})
   },
- /**
+  /**
    * 添加字典
    * @param dictType
    * @returns {Promise<void>}
    */
   saveDict: async function (dictObj) {
-    return request(BASE_URL+"/save-dict", {method: "POST", data: dictObj});
+    return request(BASE_URL + "/save-dict", {method: "POST", data: dictObj});
   },
   /**
    * 删除字典
@@ -52,7 +52,13 @@ export default {
    * @returns {Promise<void>}
    */
   removeDict: async function (id) {
-    return request(BASE_URL+"/remove-dict-by-id", {method: "DELETE", params: {id: id}})
+    return request(BASE_URL + "/remove-dict-by-id", {method: "DELETE", params: {id: id}})
   },
 
+  getDictTypeByCode: function (code) {
+    return request(BASE_URL + "/get-dict-type-by-code", {method: "GET", params: {typeCode: code}});
+  },
+  getDictValuesByCode: async function (typeCode) {
+    return request(BASE_URL + "/get-dict-values-by-code", {method: "GET", params: {typeCode: typeCode}});
+  }
 };

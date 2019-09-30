@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import {connect} from "dva";
 import dictModel from "../../../models/system/dictModel";
-import {Button, Col, Modal, Row, Table} from "antd";
+import {Button, Col, Modal, Row, Table, message} from "antd";
 import Search from "antd/es/input/Search";
 import globalStyles from '@/global.less';
 import DictForm from "./components/DictForm";
 import DictTypeForm from "./components/DictTypeForm";
+import DictManagerService from "@/services/system/DictManagerService"
 
 
 @connect(({dictModel}) => ({dictModel}))
@@ -15,14 +16,24 @@ class DictManage extends Component {
   state = {
     currentDictType: {
       id: "",
-      name: ""
+      name: "",
+      typeCode: ""
     },
-    dictTypeModalView:true,
+    savedTypeCode: "",
+    dictTypeModalView: false,
     currentSelectedKeys: [],
+    dictValueModalView:false,
     //当前字典编辑
-    editDictType:{
+    editDictType: {
+      id: "",
+      name: "",
+      typeCode: ""
+    },
+    editDictValue:{
       id:"",
-      name:""
+      name:"",
+      value:"",
+      typeId:""
     }
   };
 
@@ -30,13 +41,22 @@ class DictManage extends Component {
     this.init();
   }
 
-  init(){
-    this.getDictTypeData("").then(res=>{
-      let {dictTypePage} = this.props.dictModel ;
-      if(dictTypePage.records.length>0){
-        this.selectDictType(dictTypePage.records[0],[0])
+  init() {
+    this.getDictTypeData("").then(res => {
+      let {dictTypePage} = this.props.dictModel;
+      if (dictTypePage.records.length > 0) {
+        let index = 0;
+        if (this.state.savedTypeCode) {
+          index = dictTypePage.records.findIndex(item => {
+            return item.typeCode === this.state.savedTypeCode;
+          });
+        }
+
+        index = index > -1 ? index : 0;
+
+        this.selectDictType(dictTypePage.records[index], [index])
       }
-    }) ;
+    });
   }
 
   columns = [
@@ -44,7 +64,13 @@ class DictManage extends Component {
       title: "字典名称",
       key: "name",
       dataIndex: "name",
-      width: "50%",
+      width: "25%",
+    },
+    {
+      title: "字典编码",
+      key: "typeCode",
+      dataIndex: 'typeCode',
+      width: "25%"
     },
     {
       title: "操作",
@@ -57,7 +83,7 @@ class DictManage extends Component {
           <div>
             <Button type={"link"} onClick={e => {
               e.preventDefault();
-              this.deleteDictType(text,record);
+              this.deleteDictType(text, record);
             }}>删除</Button>
           </div>
         )
@@ -96,25 +122,25 @@ class DictManage extends Component {
   ];
 
   //删除字典
-  deleteDictType(id,record) {
+  deleteDictType(id, record) {
     // alert(id);
     Modal.confirm({
-      title:"系统提示",
-      content:"确认要删除名称为["+record.name+"] 的字典",
-      okText:"确认删除",
-      cancelText:"取消删除",
-      onOk:(e)=>{
-        let {dispatch} = this.props ;
+      title: "系统提示",
+      content: "确认要删除名称为[" + record.name + "] 的字典",
+      okText: "确认删除",
+      cancelText: "取消删除",
+      onOk: (e) => {
+        let {dispatch} = this.props;
         return dispatch({
-          type:"dictModel/removeDictType",
-          payload:{
-            id:id
+          type: "dictModel/removeDictType",
+          payload: {
+            id: id
           }
-        }).then(res=>{
+        }).then(res => {
           this.init();
         })
       }
-    }) ;
+    });
   }
 
   getDictTypeData(typeName, pageSize = 1000, currentPage = 0) {
@@ -129,14 +155,14 @@ class DictManage extends Component {
     })
   }
 
-  selectDictType(record,selectedRowKeys=[]) {
+  selectDictType(record, selectedRowKeys = []) {
     let {dispatch} = this.props;
     this.setState({
       ...this.state,
       currentDictType: {
         ...record
       },
-      currentSelectedKeys:selectedRowKeys
+      currentSelectedKeys: selectedRowKeys
     });
     dispatch({
       type: "dictModel/getDictValues",
@@ -169,10 +195,87 @@ class DictManage extends Component {
       }
     })
   }
-  //保存字典
-  saveDictType(value){
 
+  //保存字典
+  saveDictType(value) {
+    // console.log(value);
+    DictManagerService.saveDictType(value).then(res => {
+      if (res) {
+        message.success("添加成功！");
+        this.setState({
+          ...this.state,
+          dictTypeModalView: false,
+          savedTypeCode:value.typeCode
+        });
+        this.init();
+      } else {
+        message.error("保存失败,请检查！")
+      }
+    }) ;
   }
+
+  openDictTypeForm(action='add'){
+    if(action==='add'){
+      this.setState({
+        ...this.state,
+        dictTypeModalView:true,
+        editDictType: {
+          id: "",
+          name: "",
+          typeCode: ""
+        }
+      })
+    }else if(action==='edit'){
+      console.log(this.state.currentDictType)
+      this.setState({
+        ...this.state,
+        dictTypeModalView:true,
+        editDictType:{
+          ...this.state.currentDictType
+        }
+      })
+    }else{
+      return ;
+    }
+  }
+
+  openDictValueForm(record){
+
+    if(!record){
+      record={
+        id:"",
+        name:"",
+        value:"",
+        typeId:""
+      }
+    }
+
+    this.setState({
+      ...this.state,
+      dictValueModalView:true,
+      editDictValue:{
+        ...record
+      }
+    })
+  }
+
+  saveDictValue(value){
+    DictManagerService.saveDict(value).then(res => {
+      if (res) {
+        message.success("操作成功！");
+        this.setState({
+          ...this.state,
+          dictValueModalView: false,
+        });
+        this.selectDictType(this.state.currentDictType,this.state.currentSelectedKeys&&this.state.currentSelectedKeys.length>0?this.state.currentSelectedKeys[0]:0);
+      } else {
+        message.error("保存失败,请检查！")
+      }
+    }) ;
+  }
+
+
+
 
   render() {
     let {dictTypePage, currentKeyValue} = this.props.dictModel;
@@ -184,10 +287,10 @@ class DictManage extends Component {
               <Col>
                 <Button
                   icon="plus"
-                  type="primary"
+                  type="default"
                   className={globalStyles.right}
                   onClick={() => {
-                    // this.openModalForm({}, 'add');
+                    this.openDictTypeForm('add');
                   }}
                 >
                   新增字典
@@ -198,10 +301,12 @@ class DictManage extends Component {
                   className={globalStyles.right}
                   onClick={() => {
                     // this.openModalForm({}, 'add');
+                    this.openDictValueForm();
                   }}
                 >
                   新增键值
                 </Button>
+
                 <Search
                   placeholder="请输入字典名称进行查询"
                   onSearch={(value, event) => {
@@ -212,26 +317,35 @@ class DictManage extends Component {
                   className={globalStyles.left}
                   enterButton="查询"
                 />
+                <h4 style={{textAlign:'center','color':"red"}}>双击进行编辑</h4>
               </Col>
             </Row>
           </div>
         </div>
-        <div className={globalStyles.tableOneBox}>
+        <div className={globalStyles.tableBox}>
           <Row>
             <Col span={6} style={{marginRight: 2}}>
               <Table
-                title={currentPageData => {
-                  // console.log(currentPageData);
+                title={() => {
                   return (<h3 style={{'textAlign': 'center'}}>数据字典</h3>)
                 }}
-
-                scroll={{y: 'calc(100vh - 180px)'}}
+                scroll={{y: 'calc(100vh - 300px)'}}
                 pagination={false}
                 bordered={true}
                 showHeader={true}
                 onRowClick={
-                  (record,index)=>{
-                    this.selectDictType(record,[index]) ;
+                  (record, index) => {
+                    this.selectDictType(record, [index]);
+                  }
+                }
+                onRow={
+                  (record,index) => {
+                    return {
+                      onDoubleClick:event=>{
+                        console.log(record);
+                        this.openDictTypeForm("edit")
+                      }
+                    }
                   }
                 }
                 rowSelection={{
@@ -239,14 +353,9 @@ class DictManage extends Component {
                   columnWidth: "20%",
                   type: 'radio',
                   selectedRowKeys: this.state.currentSelectedKeys,
-                  onChange: ((selectedRowKeys,selectRows) => {
-                    this.selectDictType(selectRows[0],selectedRowKeys);
+                  onChange: ((selectedRowKeys, selectRows) => {
+                    this.selectDictType(selectRows[0], selectedRowKeys);
                   }),
-                  // onSelect: ((record, selected) => {
-                  //   if (selected) {
-                  //     this.selectDictType(record);
-                  //   }
-                  // })
                 }}
                 dataSource={dictTypePage.records}
                 columns={this.columns}/>
@@ -262,10 +371,18 @@ class DictManage extends Component {
                 }}
                 columns={this.valueColumns}
                 dataSource={currentKeyValue}
-                scroll={{y: 'calc(100vh - 180px)'}}
+                scroll={{y: 'calc(100vh - 300px)'}}
                 pagination={false}
                 showHeader={true}
+                onRow={record => {
+                  return {
+                    onDoubleClick:event=>{
+                      this.openDictValueForm(record);
+                    }
+                  }
+                }}
                 bordered={true}/>
+
             </Col>
           </Row>
 
@@ -274,16 +391,45 @@ class DictManage extends Component {
           </Modal>
           <Modal
             title={"字典编辑"}
-            onOk={(e)=>{
-              this.refs.dictTypeForm.validateFields((errors,value)=>{
-                // console.log(errors);
-                if(!errors){
-                  this.saveDictType(value) ;
+            onOk={(e) => {
+              this.refs.dictTypeForm.validateFields((errors, value) => {
+                console.log(errors);
+                if (!errors) {
+                  this.saveDictType(value);
                 }
+              })
+            }}
+            onCancel={(e)=>{
+              this.setState({
+                ...this.state,
+                dictTypeModalView:false
               })
             }}
             visible={this.state.dictTypeModalView}>
             <DictTypeForm currentDictType={this.state.editDictType} ref={"dictTypeForm"}/>
+          </Modal>
+
+          <Modal
+            visible={this.state.dictValueModalView}
+            onCancel={
+              e=>{
+                e.preventDefault();
+                this.setState({
+                  ...this.state,
+                  dictValueModalView:false
+                })
+              }
+            }
+            onOk={e=>{
+              e.preventDefault();
+              this.refs.dictValueForm.validateFields((errors,value) =>{
+                if(!errors){
+                  this.saveDictValue(value);
+                }
+              })
+            }}
+            title={"键值编辑"}>
+            <DictForm currentDict={this.state.editDictValue} currentDictType={this.state.currentDictType} ref={"dictValueForm"}/>
           </Modal>
 
         </div>
