@@ -30,14 +30,17 @@ class DictTypeForm extends Component{
               getFieldDecorator('typeCode',{
                 rules:[{
                   validator: async (rule, value, callback) => {
+                    // console.log(this)
                     if (!value) {
                       callback(new Error("字典编码不能为空！"));
                     }
-                    await DictManagerService.getDictTypeByCode(value).then(res => {
-                      if (res) {
-                        callback(new Error("字典编码已经存在了,请确认！"));
-                      }
-                    });
+                    if(!this.props.currentDictType.id){
+                      await DictManagerService.getDictTypeByCode(value).then(res => {
+                        if (res) {
+                          callback(new Error("字典编码已经存在了,请确认！"));
+                        }
+                      });
+                    }
                     callback();
                   }
                 }]

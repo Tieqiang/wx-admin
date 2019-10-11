@@ -17,6 +17,18 @@ const routes = [
     Routes: ['src/pages/Authorized'],
     routes: [
       {
+        name:"patAdmit",
+        path:"/pat-admit",
+        icon:"edit",
+        component:'./pat/AdmitIndex'
+      },
+      {
+        name:"followEvent",
+        path:"/followEvent",
+        icon:"plus",
+        component:"./follow/event"
+      },
+      {
         path: '/system',
         name: 'system',
         icon: 'setting',

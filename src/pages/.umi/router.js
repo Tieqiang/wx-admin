@@ -56,6 +56,34 @@ const routes = [
     Routes: [require('../Authorized').default],
     routes: [
       {
+        name: 'patAdmit',
+        path: '/pat-admit',
+        icon: 'edit',
+        component: __IS_BROWSER
+          ? _dvaDynamic({
+              component: () =>
+                import(/* webpackChunkName: "p__pat__AdmitIndex" */ '../pat/AdmitIndex'),
+              LoadingComponent: require('/home/zhaotq/WebstormProjects/wx-admin/src/components/PageLoading/index')
+                .default,
+            })
+          : require('../pat/AdmitIndex').default,
+        exact: true,
+      },
+      {
+        name: 'followEvent',
+        path: '/followEvent',
+        icon: 'plus',
+        component: __IS_BROWSER
+          ? _dvaDynamic({
+              component: () =>
+                import(/* webpackChunkName: "p__follow__event" */ '../follow/event'),
+              LoadingComponent: require('/home/zhaotq/WebstormProjects/wx-admin/src/components/PageLoading/index')
+                .default,
+            })
+          : require('../follow/event').default,
+        exact: true,
+      },
+      {
         path: '/system',
         name: 'system',
         icon: 'setting',

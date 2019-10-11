@@ -64,20 +64,20 @@ class DictManage extends Component {
       title: "字典名称",
       key: "name",
       dataIndex: "name",
-      width: "25%",
+      width:100,
     },
     {
       title: "字典编码",
       key: "typeCode",
       dataIndex: 'typeCode',
-      width: "25%"
+      width:100,
     },
     {
       title: "操作",
       key: "id",
       dataIndex: "id",
-      align: 'center',
-      width: '30%',
+      width:100,
+      fixed:"right",
       render: (text, record, index) => {
         return (
           <div>
@@ -329,7 +329,7 @@ class DictManage extends Component {
                 title={() => {
                   return (<h3 style={{'textAlign': 'center'}}>数据字典</h3>)
                 }}
-                scroll={{y: 'calc(100vh - 300px)'}}
+                scroll={{x:390,y: 'calc(100vh - 300px)'}}
                 pagination={false}
                 bordered={true}
                 showHeader={true}
@@ -350,7 +350,6 @@ class DictManage extends Component {
                 }
                 rowSelection={{
                   columnTitle: "选择",
-                  columnWidth: "20%",
                   type: 'radio',
                   selectedRowKeys: this.state.currentSelectedKeys,
                   onChange: ((selectedRowKeys, selectRows) => {
@@ -371,7 +370,7 @@ class DictManage extends Component {
                 }}
                 columns={this.valueColumns}
                 dataSource={currentKeyValue}
-                scroll={{y: 'calc(100vh - 300px)'}}
+                scroll={{x:'1000',y: 'calc(100vh - 300px)'}}
                 pagination={false}
                 showHeader={true}
                 onRow={record => {

@@ -52,5 +52,8 @@ export default {
   'menu.system.organization': '机构管理',
   'menu.system.module': '模块管理',
   "menu.system.dictManage":"系统字典管理",
-  "menu.system.dict-manage":"系统字典管理"
+  "menu.system.dict-manage":"系统字典管理",
+  "menu.patAdmit":"信息登记",
+  "menu.pat-admit":"信息登记",
+  "menu.followEvent":"随访事件维护"
 };
